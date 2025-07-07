@@ -1,0 +1,39 @@
+models:
+  - name: stg_ecommerce__orders
+    description: "This table contains the staging version of the orders data from the e-commerce platform. It includes details about each order, such as the user who placed it, the status of the order, and timestamps for various stages of the order process."
+    columns:
+      - name: order_id
+        description: ""
+        tests:
+          - not_null
+          - unique
+
+      - name: user_id
+        description: ""
+
+      - name: status
+        description: ""
+        tests:
+        - not_null
+        - accepted_values:
+            name: unexpected_order_status # We can name our tests to make it easier to give more meaningful errors
+            values:
+              - Processing
+              - Cancelled
+              - Shipped
+              - Complete
+              - Returned
+
+      - name: created_at
+        description: ""
+
+      - name: returned_at
+        description: ""
+
+      - name: shipped_at
+        description: ""
+
+      - name: delivered_at
+        description: ""
+
+      - name: num_of_item
