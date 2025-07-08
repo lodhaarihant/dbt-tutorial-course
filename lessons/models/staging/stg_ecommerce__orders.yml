@@ -1,6 +1,8 @@
+version: 2
+
 models:
   - name: stg_ecommerce__orders
-    description: "This table contains the staging version of the orders data from the e-commerce platform. It includes details about each order, such as the user who placed it, the status of the order, and timestamps for various stages of the order process."
+    description: "Table of 1 row per order"
     columns:
       - name: order_id
         description: ""
@@ -9,31 +11,45 @@ models:
           - unique
 
       - name: user_id
-        description: ""
+        tests:
+          - not_null
 
       - name: status
         description: ""
         tests:
-        - not_null
-        - accepted_values:
-            name: unexpected_order_status # We can name our tests to make it easier to give more meaningful errors
-            values:
-              - Processing
-              - Cancelled
-              - Shipped
-              - Complete
-              - Returned
+          - accepted_values:
+              name: unexpected_order_status # We can name our tests to make it easier to give more meaningful errors
+              values:
+                - Processing
+                - Cancelled
+                - Shipped
+                - Complete
+                - Returned
 
       - name: created_at
-        description: ""
+        description: "When the order was created"
+        tests:
+          - not_null
 
       - name: returned_at
-        description: ""
+        description: "When the order was returned"
+        tests:
+          - not_null:
+              where: "status = 'Returned'"
 
       - name: shipped_at
-        description: ""
+        description: "When the order was shipped"
+        tests:
+          - not_null:
+              where: "delivered_at IS NOT NULL OR status = 'Shipped'"
 
       - name: delivered_at
-        description: ""
+        description: "When the order was delivered"
+        tests:
+          - not_null:
+              where: "returned_at IS NOT NULL OR status = 'Complete'"
 
-      - name: num_of_item
+      - name: num_items_ordered
+        description: "Number of items in the order"
+        tests:
+          - not_null
