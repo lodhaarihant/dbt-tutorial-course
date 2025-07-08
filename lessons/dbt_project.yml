@@ -35,3 +35,10 @@ models:
     +persist_docs:
       relation: true
       columns: true
+    +hours_to_expiration: 168 # 7 days (7 * 24 hours = 168)
+
+tests:
+  lessons:
+    severity: warn # Set the severity of tests to 'warn' by default
+    marts:
+      +severity: error # Override severity for marts to 'error'
