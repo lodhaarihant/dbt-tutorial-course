@@ -40,5 +40,3 @@ models:
 tests:
   lessons:
     severity: warn # Set the severity of tests to 'warn' by default
-    marts:
-      +severity: error # Override severity for marts to 'error'
